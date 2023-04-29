@@ -34,7 +34,7 @@ TreeNode::TreeNode(string _sym, int _key)
 
 TreeNode::TreeNode(TreeNode *_left, TreeNode *_right)  //создание узла где мы конкатинируем сиволы и частоты 
 {
-    sym = _left->sym + _right->sym; // конкатенируем строки
+    sym = _left->sym + _right->sym; // конкатенируем символв 
     key = _left->key + _right->key; // складываем частоты
 
     left = _left; // устанавливаем левого потомка
