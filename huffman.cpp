@@ -1,78 +1,125 @@
 #include <iostream>
-#include <map>
-#include <vector>
-#include <stdbool.h>
-#include <iterator>
 #include <fstream>
 #include <string>
+#include <stdbool.h>
 
 using namespace std;
 
-class TreeNode{     //класс узел для дерева хаффмана
-    public:
-        string sym;
-        int key;
-        TreeNode *left, *right;
-    public:
-        TreeNode();
-        TreeNode(string , int );
-        TreeNode(TreeNode *, TreeNode *); //конструктор для конкатенации символов и сложения ключей (частот) 
+class ListNode // класс для узла списка, список нужен для того чтобы создать таблицу частот появления символов
+{
+public:
+    string symbol;
+    size_t frequency_of_symbol;
+    ListNode *nextNode;
+
+public:
+    // string getListSym()
+    // {
+    //     return symbol;
+    // }
+
+    // void setListSym(string key)
+    // {
+    //     symbol = key;
+    // }
+
+    // ListNode getListNext()
+    // {
+    //     return *nextNode;
+    // }
+
+    // void setListNode(ListNode *node)
+    // {
+    //     nextNode = node;
+    // }
+
+    ListNode(string sym, size_t frequency)
+    {
+        symbol = sym;
+        frequency_of_symbol = frequency;
+        nextNode = nullptr;
+    }
 };
 
-TreeNode::TreeNode()
+class List
 {
-    left = NULL;
-    right = NULL;
-}
+    friend ListNode;
 
-TreeNode::TreeNode(string _sym, int _key)
-{
-    sym = _sym; // это переменная для хранения символа
-    key = _key; // это переменная для хранения частот
-    left = NULL; right = NULL;
-}
+protected:
+    ListNode *head;
 
-TreeNode::TreeNode(TreeNode *_left, TreeNode *_right)  //создание узла где мы конкатинируем сиволы и частоты 
-{
-    sym = _left->sym + _right->sym; // конкатенируем символв 
-    key = _left->key + _right->key; // складываем частоты
+public:
+    List()
+    {
+        head = nullptr;
+    }
 
-    left = _left; // устанавливаем левого потомка
-    right = _right; // устанавливаем правого потомка
-}
+    List(ListNode *node)
+    {
+        head = node;
+    }
 
-class ListNode // класс узел для списка
-{
-    public:
-        TreeNode *treeNode;
-        ListNode *nextNode;
-    public:
-
-        bool addAfterGiven(ListNode **list_head, int search_key, TreeNode **node_to_insert) //метод для добалвения элемента списка после заданного
+    bool addAfterGiven( int search_frequency, ListNode **node_to_insert) // метод для добалвения элемента списка после заданного
+    {
+        if(node_to_insert)
         {
-            if(list_head)
+            if(*node_to_insert)
             {
-                if(*list_head)
-                {
-                    ListNode *new_node;
-                    new_node->treeNode = *node_to_insert;
-                    new_node->nextNode = NULL;
+                ListNode *new_node = *node_to_insert; 
+                ListNode *current = head;
+                ListNode *current_next = nullptr;
 
-                    ListNode *current = *list_head;
-                    for(; current && current->treeNode->key != search_key && current->nextNode->treeNode->key <= search_key; current = current->nextNode);
+                for(; (current != nullptr) && (current->nextNode->frequency_of_symbol <= search_frequency); current = current->nextNode);
+                current_next = current->nextNode;
 
-                    new_node->nextNode = current->nextNode;
-                    current->nextNode = new_node;
-
-                    return true;
-    
-                }else return false;
-
-            }else return false;
+                current->nextNode = new_node;
+                new_node->nextNode = current_next;
+            }
+            else
+            {
+                return false;
+            }
         }
-
-        void dellByValue(ListNode **list_head, int search_key) //метод для удаления узла списка (доделать)
+        else
         {
-            
+            return false;
         }
+    }
+
+    void printList()
+    {
+        ListNode *current = head;
+
+        while(current)
+        {
+            cout << current->symbol << " - " << current->frequency_of_symbol << endl;
+            current = current->nextNode;
+        }
+    }
+
+    void delHead()
+    {
+        head = head->nextNode;
+    }
+
 };
+
+
+
+int main()
+{
+    ifstream myfile("mytext.txt"); //открываем файл
+    size_t size_of_file = 0; 
+    string my_text; //создаем строку
+
+    while (!myfile.eof()) //пока не конец файла
+    {
+        getline(myfile, my_text); //считываем строку и записываем её в строку
+        cout << endl << my_text << endl;
+    }
+    size_of_file = my_text.length();
+
+
+
+    return 0;
+}
