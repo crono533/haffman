@@ -49,6 +49,17 @@ protected:
     ListNode *head;
 
 public:
+
+    ListNode* getHead()
+    {
+        return head;
+    }
+
+    void setHead(ListNode *new_node)
+    {
+        head = new_node;
+    }
+
     List()
     {
         head = nullptr;
@@ -102,6 +113,11 @@ public:
         head = head->nextNode;
     }
 
+    bool findSym() //метод нужен для того, чтобы понять, если ли символ в списке
+    {
+
+    }
+
 };
 
 
@@ -120,6 +136,29 @@ int main()
     size_of_file = my_text.length();
 
 
+    List list;
+    ListNode *current = list.getHead();
+
+    for(int i = 0; i < size_of_file; i++) //в цикле будем создавать список частот символов
+    {
+        if(current == nullptr)
+        {
+            string sym(1, my_text[i]); // Создание строки из символа
+            current = new ListNode(sym, 1);
+            list.setHead(current);
+        }
+        else
+        {
+
+            string sym(1, my_text[i]); // Создание строки из символа
+            
+
+
+
+        }
+    }
+
+    list.printList();
 
     return 0;
 }
