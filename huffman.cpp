@@ -11,6 +11,8 @@ public:
     string symbol;
     size_t frequency_of_symbol;
     ListNode *nextNode;
+    ListNode *rightChild;
+    ListNode *leftChild;
 
 public:
     // string getListSym()
@@ -38,6 +40,8 @@ public:
         symbol = sym;
         frequency_of_symbol = frequency;
         nextNode = nullptr;
+        rightChild = nullptr;
+        leftChild = nullptr;
     }
 };
 
@@ -273,15 +277,18 @@ public:
         leftChild = treeNodeLeft;
         nextNode = nullptr;
     }
-
-
-
 };
 
 class HuffmanTree 
 {
-public: 
+private: 
     TreeNode* root;
+
+public:
+    TreeNode* getRoot()
+    {
+        return root;
+    }
 };
 
 
@@ -331,9 +338,13 @@ int main()
     list.printList();
 
     int size_of_list = list.sizeOfList();
-    cout << size_of_list << endl;
-    //будем строить дерево кодов
-    for(int i = 0; ;)
+    ListNode *current = list.getHead();
+
+    while(list.getHead())
+    {
+
+    }
+
 
     return 0;
 }
