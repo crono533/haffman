@@ -125,7 +125,7 @@ public:
         
         if(current == nullptr)
         {
-            cout<< "error findSym"<<endl;
+            //cout<< "error findSym"<<endl;
             return false;
         }
 
@@ -153,8 +153,8 @@ public:
 
         if(current == nullptr)
         {
-            cout<< "error findSym"<<endl;
-            exit(1);
+            //cout<< "error findSym"<<endl;
+            return nullptr;
         }
 
         if (current->symbol == key) // если символ является головой списка
@@ -167,7 +167,8 @@ public:
 
         if (current && current->symbol == key) // если нашли то возвращаем узел
             return current;
-        
+
+         return nullptr; // если не нашли, возвращаем nullptr
     }
 
 };
