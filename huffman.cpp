@@ -195,6 +195,21 @@ public:
 
         head = sortedList.head;
     }
+
+    int sizeOfList()
+    {
+        if(head == nullptr)
+            return 0;
+        
+        int size_of_list = 0;
+        ListNode *current = head;
+        while(current)
+        {
+            size_of_list++;
+            current = current->nextNode;
+        }
+        return size_of_list;
+    }
 };
 
 
@@ -314,6 +329,11 @@ int main()
     list.insertionSort();
 
     list.printList();
+
+    int size_of_list = list.sizeOfList();
+    cout << size_of_list << endl;
+    //будем строить дерево кодов
+    for(int i = 0; ;)
 
     return 0;
 }
