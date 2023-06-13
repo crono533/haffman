@@ -70,31 +70,38 @@ public:
         head = node;
     }
 
-    bool addAfterGiven( int search_frequency, ListNode **node_to_insert) // метод для добалвения элемента списка после заданного
+    bool addAfterGiven(int search_frequency, ListNode **node_to_insert)
     {
-        if(node_to_insert)
+        if (node_to_insert)
         {
-            if(*node_to_insert)
+            if (*node_to_insert)
             {
-                ListNode *new_node = *node_to_insert; 
+                ListNode *new_node = *node_to_insert;
                 ListNode *current = head;
                 ListNode *current_next = nullptr;
 
-                for(; (current != nullptr) && (current->nextNode->frequency_of_symbol <= search_frequency); current = current->nextNode);
-                current_next = current->nextNode;
+                if (head == nullptr || head->frequency_of_symbol >= search_frequency) // Здесь изменено условие сравнения
+                {
+                    new_node->nextNode = head;
+                    head = new_node;
+                }
+                else
+                {
+                    while (current->nextNode != nullptr && current->nextNode->frequency_of_symbol <= search_frequency) // Здесь изменено условие сравнения
+                    {
+                        current = current->nextNode;
+                    }
 
-                current->nextNode = new_node;
-                new_node->nextNode = current_next;
-            }
-            else
-            {
-                return false;
+                    current_next = current->nextNode;
+                    current->nextNode = new_node;
+                    new_node->nextNode = current_next;
+                }
+
+                return true;
             }
         }
-        else
-        {
-            return false;
-        }
+
+        return false;
     }
 
     void addHead(ListNode* new_head)
@@ -171,6 +178,23 @@ public:
          return nullptr; // если не нашли, возвращаем nullptr
     }
 
+    void insertionSort()
+    {
+        if (head == nullptr || head->nextNode == nullptr)
+            return;
+
+        List sortedList;
+        ListNode *current = head;
+
+        while (current != nullptr)
+        {
+            ListNode *nextNode = current->nextNode;
+            sortedList.addAfterGiven(current->frequency_of_symbol, &current);
+            current = nextNode;
+        }
+
+        head = sortedList.head;
+    }
 };
 
 
@@ -217,6 +241,10 @@ int main()
     }
 
 
+    list.printList();
+
+    list.insertionSort();
+    cout<<endl <<endl;
     list.printList();
 
     return 0;
