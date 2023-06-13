@@ -97,6 +97,12 @@ public:
         }
     }
 
+    void addHead(ListNode* new_head)
+    {
+        new_head->nextNode = head;
+        head = new_head;
+    }
+
     void printList()
     {
         ListNode *current = head;
@@ -113,9 +119,55 @@ public:
         head = head->nextNode;
     }
 
-    bool findSym() //метод нужен для того, чтобы понять, если ли символ в списке
+    bool findSym(string key) //метод нужен для того, чтобы понять, если ли символ в списке
     {
+        ListNode *current = this->head;
+        
+        if(current == nullptr)
+        {
+            cout<< "error findSym"<<endl;
+            return false;
+        }
 
+        if(current->symbol == key) //если символ является головой списка
+            return true;
+
+        while(current && current->symbol != key) //если он не голова то ищем его 
+        {
+            current = current->nextNode;
+        }
+
+        if(current && current->symbol == key) //если нашли то возвращает true 
+            return true;
+        else
+        {
+            return false;
+        }
+
+        return false; //если не нашли то false
+    }
+
+    ListNode* getNode(string key)
+    {
+        ListNode *current = this->head;
+
+        if(current == nullptr)
+        {
+            cout<< "error findSym"<<endl;
+            exit(1);
+        }
+
+        if (current->symbol == key) // если символ является головой списка
+            return current;
+        
+        while (current && current->symbol != key) // если он не голова то ищем его
+        {
+            current = current->nextNode;
+        }
+
+        if (current && current->symbol == key) // если нашли то возвращаем узел
+            return current;
+        
     }
 
 };
@@ -143,20 +195,26 @@ int main()
     {
         if(current == nullptr)
         {
-            string sym(1, my_text[i]); // Создание строки из символа
+            string sym(1, my_text[i]); // Создание строки из символа(создаем строку именно так, потому что иначе строку из символа не создать)
             current = new ListNode(sym, 1);
             list.setHead(current);
         }
         else
         {
-
             string sym(1, my_text[i]); // Создание строки из символа
-            
-
-
-
+            if(list.findSym(sym))
+            {
+                ListNode *node = list.getNode(sym);
+                node->frequency_of_symbol++;
+            }
+            else
+            {
+                ListNode *new_node = new ListNode(sym, 1);
+                list.addHead(new_node);
+            }
         }
     }
+
 
     list.printList();
 
