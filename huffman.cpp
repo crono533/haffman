@@ -240,11 +240,8 @@ int main()
         }
     }
 
-
-    list.printList();
-
     list.insertionSort();
-    cout<<endl <<endl;
+
     list.printList();
 
     return 0;
