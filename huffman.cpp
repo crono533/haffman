@@ -214,6 +214,18 @@ public:
         nextNode = nullptr;
     }
 
+    TreeNode(string sym, size_t frequency, ListNode *listNodeLeft, ListNode *listNodeRight)
+    {
+        TreeNode *_leftChild = new TreeNode(listNodeLeft->symbol, listNodeLeft->frequency_of_symbol);
+        TreeNode *_rightChild = new TreeNode(listNodeRight->symbol, listNodeRight->frequency_of_symbol);
+
+        symbol = sym;
+        frequency_of_symbol = frequency;
+        rightChild = _rightChild;
+        leftChild = _leftChild;
+        nextNode = nullptr;
+    }
+
     TreeNode(string sym, size_t frequency, TreeNode *treeNodeLeft, ListNode *listNodeRight)
     {
         symbol = sym;
