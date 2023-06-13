@@ -198,6 +198,33 @@ public:
 };
 
 
+class TreeNode
+{
+public: 
+    string symbol;
+    size_t frequency_of_symbol;
+    TreeNode *leftChild, *rightChild;
+
+    TreeNode(string sym, size_t frequency)
+    {
+        symbol = sym;
+        frequency_of_symbol = frequency;
+        leftChild = nullptr;
+        rightChild = nullptr;
+    }
+
+};
+
+class HuffmanTree 
+{
+public: 
+    TreeNode* root;
+
+    
+
+
+};
+
 
 int main()
 {
