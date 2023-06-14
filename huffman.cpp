@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <stdbool.h>
+#include <algorithm>
 
 using namespace std;
 
@@ -175,6 +176,34 @@ public:
         return false; // если не нашли то false
     }
 
+    int getFreqSym(string key) // метод нужен для того, чтобы понять, если ли символ в списке
+    {
+        ListNode *current = this->head;
+
+        if (current == nullptr)
+        {
+            // cout<< "error findSym"<<endl;
+            return false;
+        }
+
+        if (current->symbol == key) // если символ является головой списка
+            return current->frequency_of_symbol;
+
+        while (current && current->symbol != key) // если он не голова то ищем его
+        {
+            current = current->nextNode;
+        }
+
+        if (current && current->symbol == key) // если нашли то возвращает true
+            return current->frequency_of_symbol;
+        else
+        {
+            return false;
+        }
+
+        return false; // если не нашли то false
+    }
+
     ListNode *getNode(string key)
     {
         ListNode *current = this->head;
@@ -283,6 +312,7 @@ public:
 
         return "";
     }
+
 };
 
 void print_vector(unsigned char vector)
@@ -312,13 +342,15 @@ int main()
     while (!myfile.eof()) //пока не конец файла
     {
         getline(myfile, my_text); //считываем строку и записываем её в строку
-        cout << endl << my_text << endl;
+        //cout << endl << my_text << endl;
     }
     size_of_file = my_text.length();
 
 
     List list;
+    List listFreq;
     ListNode *current = list.getHead();
+    ListNode *current_freq = listFreq.getHead();
 
     for(int i = 0; i < size_of_file; i++) //в цикле будем создавать список частот символов
     {
@@ -344,9 +376,37 @@ int main()
         }
     }
 
-    list.insertionSort();
+    //этот кринж надо вынести в метод, или функцию, мне плохо становится когда я смотрю на это
+    //создатется список частот
+    for(int i = 0; i < size_of_file; i++) //в цикле будем создавать список частот символов
+    {
+        if(current_freq == nullptr)
+        {
+            string sym(1, my_text[i]); // Создание строки из символа(создаем строку именно так, потому что иначе строку из символа не создать)
+            current_freq = new ListNode(sym, 1);
+            listFreq.setHead(current_freq);
+        }
+        else
+        {
+            string sym(1, my_text[i]); // Создание строки из символа
+            if(listFreq.findSym(sym))
+            {
+                ListNode *node = listFreq.getNode(sym);
+                node->frequency_of_symbol++;
+            }
+            else
+            {
+                ListNode *new_node = new ListNode(sym, 1);
+                listFreq.addHead(new_node);
+            }
+        }
+    }
 
-    list.printList();
+    list.insertionSort();
+    listFreq.insertionSort();
+    //list.printList();
+    listFreq.printList();
+
 
     //строим дерево Хаффмана
     int size_of_list = list.sizeOfList();
@@ -360,17 +420,65 @@ int main()
         list.delHead();
     }
 
-    list.printList();
+    //list.printList();
 
     list.buildHuffmanCodes(list.getHead(), "");
-    list.printHuffmanCodes(list.getHead(), "");
+    //list.printHuffmanCodes(list.getHead(), "");
 
     string code;
-    code = list.findHuffmanCode(list.getHead(), "T", "");
-    cout << code << endl;
+    //code = list.findHuffmanCode(list.getHead(), "T", "");
+   // cout << code << endl;
 
     //здесь записываем строку нулей и единиц которые представляют последвательность бит после кодирования
     //эта строка будет использоваться для записи бит закодированного сообщения
+
+    //тут записывается таблица
+    ofstream file("code_text.txt");
+    int freq = 0;
+    char freq_to_sym;
+    int size_of_listFreq = listFreq.sizeOfList();
+    current_freq = listFreq.getHead();
+    string stringFreq; 
+    while(current_freq)
+    {
+        freq = listFreq.getFreqSym(current_freq->symbol);
+        //cout<< freq << endl;
+        file << current_freq->symbol;
+        stringFreq.clear();
+        while(freq != 0)
+        {
+            freq_to_sym = (freq % 10) + '0';
+            stringFreq = stringFreq + freq_to_sym;
+            //cout<< stringFreq << endl;
+            //file << freq_to_sym;
+            freq = freq / 10; 
+        }
+        //cout << stringFreq << endl;
+        if(stringFreq.length() > 1)
+        {
+            reverse(stringFreq.begin(), stringFreq.end());
+            //cout<<"хуй" << endl;
+            //cout << stringFreq << endl;
+            int j = stringFreq.length();
+            int jx = 0;
+            while(j > 0)
+            {
+                cout << "Write: " << stringFreq[jx] << endl;
+                file << stringFreq[jx];
+                jx++;
+                j--;
+            }
+        }
+        else if(stringFreq.length() == 1)
+        {
+            file << stringFreq;
+        }
+
+        current_freq = current_freq->nextNode;
+    }
+
+    file << "Tab";
+
 
     string code_text;
     for(int i = 0; i < size_of_file; i++)
@@ -379,14 +487,13 @@ int main()
         code = list.findHuffmanCode(list.getHead(), sym, "");
         code_text = code_text+code;
     }
-    cout<<"Code text: "<< code_text<< endl << endl;
+   // cout<<"Code text: "<< code_text<< endl << endl;
 
 
     //записываем биты в файл
     unsigned char sym_to_write = 0;
     unsigned char mask = 0;
 
-    ofstream file("code_text.txt");
     size_t size_of_code_text = code_text.length();
     size_t lastBits = size_of_code_text % 8;
 
@@ -405,7 +512,7 @@ int main()
 
             if ( i != 0 && i % 8 == 0)
             {
-                print_vector(sym_to_write);
+                //print_vector(sym_to_write);
                 file << sym_to_write;
                 sym_to_write = 0;
             }
@@ -420,9 +527,11 @@ int main()
                 sym_to_write |= mask;
             }
         }
-        print_vector(sym_to_write);
+        //print_vector(sym_to_write);
         file << sym_to_write;
     }
+
+    
 
     return 0;
 }
