@@ -53,6 +53,15 @@ public:
         leftChild = nodeLeft;
         rightChild = nodeRight;
     }
+    ListNode(ListNode *node)
+    {
+        symbol = node->symbol;
+        code = node->code;
+        frequency_of_symbol = node->frequency_of_symbol;
+        nextNode = nullptr;
+        rightChild = nullptr;
+        leftChild = nullptr;
+    }
 };
 
 class List
