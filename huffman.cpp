@@ -9,6 +9,7 @@ class ListNode // класс для узла списка, список нуже
 {
 public:
     string symbol;
+    string code;
     size_t frequency_of_symbol;
     ListNode *nextNode;
     ListNode *rightChild;
@@ -222,6 +223,36 @@ public:
         }
         return size_of_list;
     }
+
+    void buildHuffmanCodes(ListNode *node, string code)
+    {
+        if (node == nullptr)
+            return;
+
+        if (node->leftChild == nullptr && node->rightChild == nullptr)
+        {
+            node->code = code;
+            return;
+        }
+
+        buildHuffmanCodes(node->leftChild, code + "0");
+        buildHuffmanCodes(node->rightChild, code + "1");
+    }
+
+    void printHuffmanCodes(ListNode *node, string code)
+    {
+        if (node == nullptr)
+            return;
+
+        if (node->leftChild == nullptr && node->rightChild == nullptr)
+        {
+            cout << node->symbol << " - " << code << endl;
+            return;
+        }
+
+        printHuffmanCodes(node->leftChild, code + "0");
+        printHuffmanCodes(node->rightChild, code + "1");
+    }
 };
 
 
@@ -282,7 +313,11 @@ int main()
         list.delHead();
     }
 
-     list.printList();
+    list.printList();
+
+    list.buildHuffmanCodes(list.getHead(), "");
+    list.printHuffmanCodes(list.getHead(), "");
+
 
     return 0;
 }
