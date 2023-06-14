@@ -109,12 +109,6 @@ public:
                     current->nextNode = new_node;
                     new_node->nextNode = current_next;
                 }
-
-                // if(current->nextNode == nullptr)
-                // {
-                //     current->nextNode = new_node;                   
-                // }
-
                 return true;
             }
         }
@@ -229,81 +223,6 @@ public:
         return size_of_list;
     }
 };
-
-
-// class TreeNode
-// {
-// public: 
-//     string symbol;
-//     size_t frequency_of_symbol;
-//     TreeNode *leftChild, *rightChild, *nextNode;
-
-//     TreeNode(string sym, size_t frequency)
-//     {
-//         symbol = sym;
-//         frequency_of_symbol = frequency;
-//         leftChild = nullptr;
-//         rightChild = nullptr;
-//         nextNode = nullptr;
-//     }
-
-//     TreeNode(string sym, size_t frequency, ListNode *listNodeLeft, ListNode *listNodeRight)
-//     {
-//         TreeNode *_leftChild = new TreeNode(listNodeLeft->symbol, listNodeLeft->frequency_of_symbol);
-//         TreeNode *_rightChild = new TreeNode(listNodeRight->symbol, listNodeRight->frequency_of_symbol);
-
-//         symbol = sym;
-//         frequency_of_symbol = frequency;
-//         rightChild = _rightChild;
-//         leftChild = _leftChild;
-//         nextNode = nullptr;
-//     }
-
-//     TreeNode(string sym, size_t frequency, TreeNode *treeNodeLeft, ListNode *listNodeRight)
-//     {
-//         symbol = sym;
-//         frequency_of_symbol = frequency;
-
-//         TreeNode *nodeFromList = new TreeNode(listNodeRight->symbol, listNodeRight->frequency_of_symbol); 
-
-//         rightChild = nodeFromList;
-//         leftChild = treeNodeLeft;
-//         nextNode = nullptr;
-//     }
-
-//     TreeNode(string sym, size_t frequency, ListNode *listNodeLeft, TreeNode *treeNodeRight)
-//     {
-//         symbol = sym;
-//         frequency_of_symbol = frequency;
-
-//         TreeNode *nodeFromList = new TreeNode(listNodeLeft->symbol, listNodeLeft->frequency_of_symbol); 
-
-//         rightChild = treeNodeRight;
-//         leftChild = nodeFromList;
-//         nextNode = nullptr;
-//     }
-
-//     TreeNode(string sym, size_t frequency, TreeNode *treeNodeLeft, TreeNode *treeNodeRight)
-//     {
-//         symbol = sym;
-//         frequency_of_symbol = frequency;
-//         rightChild = treeNodeRight;
-//         leftChild = treeNodeLeft;
-//         nextNode = nullptr;
-//     }
-// };
-
-// class HuffmanTree 
-// {
-// private: 
-//     TreeNode* root;
-
-// public:
-//     TreeNode* getRoot()
-//     {
-//         return root;
-//     }
-// };
 
 
 int main()
