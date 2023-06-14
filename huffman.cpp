@@ -72,8 +72,7 @@ protected:
     ListNode *head;
 
 public:
-
-    ListNode* getHead()
+    ListNode *getHead()
     {
         return head;
     }
@@ -126,7 +125,7 @@ public:
         return false;
     }
 
-    void addHead(ListNode* new_head)
+    void addHead(ListNode *new_head)
     {
         new_head->nextNode = head;
         head = new_head;
@@ -136,7 +135,7 @@ public:
     {
         ListNode *current = head;
 
-        while(current)
+        while (current)
         {
             cout << current->symbol << " - " << current->frequency_of_symbol << endl;
             current = current->nextNode;
@@ -148,47 +147,47 @@ public:
         head = head->nextNode;
     }
 
-    bool findSym(string key) //метод нужен для того, чтобы понять, если ли символ в списке
+    bool findSym(string key) // метод нужен для того, чтобы понять, если ли символ в списке
     {
         ListNode *current = this->head;
-        
-        if(current == nullptr)
+
+        if (current == nullptr)
         {
-            //cout<< "error findSym"<<endl;
+            // cout<< "error findSym"<<endl;
             return false;
         }
 
-        if(current->symbol == key) //если символ является головой списка
+        if (current->symbol == key) // если символ является головой списка
             return true;
 
-        while(current && current->symbol != key) //если он не голова то ищем его 
+        while (current && current->symbol != key) // если он не голова то ищем его
         {
             current = current->nextNode;
         }
 
-        if(current && current->symbol == key) //если нашли то возвращает true 
+        if (current && current->symbol == key) // если нашли то возвращает true
             return true;
         else
         {
             return false;
         }
 
-        return false; //если не нашли то false
+        return false; // если не нашли то false
     }
 
-    ListNode* getNode(string key)
+    ListNode *getNode(string key)
     {
         ListNode *current = this->head;
 
-        if(current == nullptr)
+        if (current == nullptr)
         {
-            //cout<< "error findSym"<<endl;
+            // cout<< "error findSym"<<endl;
             return nullptr;
         }
 
         if (current->symbol == key) // если символ является головой списка
             return current;
-        
+
         while (current && current->symbol != key) // если он не голова то ищем его
         {
             current = current->nextNode;
@@ -197,7 +196,7 @@ public:
         if (current && current->symbol == key) // если нашли то возвращаем узел
             return current;
 
-         return nullptr; // если не нашли, возвращаем nullptr
+        return nullptr; // если не нашли, возвращаем nullptr
     }
 
     void insertionSort()
@@ -220,12 +219,12 @@ public:
 
     int sizeOfList()
     {
-        if(head == nullptr)
+        if (head == nullptr)
             return 0;
-        
+
         int size_of_list = 0;
         ListNode *current = head;
-        while(current)
+        while (current)
         {
             size_of_list++;
             current = current->nextNode;
@@ -262,8 +261,29 @@ public:
         printHuffmanCodes(node->leftChild, code + "0");
         printHuffmanCodes(node->rightChild, code + "1");
     }
-};
 
+    string findHuffmanCode(ListNode *node, string key, string code)
+    {
+        if (node == nullptr)
+            return "";
+
+        if (node->symbol == key)
+        {
+            //cout << "found";
+            return code;
+        }
+
+        string leftCode = findHuffmanCode(node->leftChild, key, code + "0");
+        if (!leftCode.empty())
+            return leftCode;
+
+        string rightCode = findHuffmanCode(node->rightChild, key, code + "1");
+        if (!rightCode.empty())
+            return rightCode;
+
+        return "";
+    }
+};
 
 int main()
 {
@@ -327,6 +347,9 @@ int main()
     list.buildHuffmanCodes(list.getHead(), "");
     list.printHuffmanCodes(list.getHead(), "");
 
+    string code;
+    code = list.findHuffmanCode(list.getHead(), "T", "");
 
+    cout << code << endl;
     return 0;
 }
