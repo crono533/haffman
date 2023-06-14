@@ -254,7 +254,7 @@ public:
 
         if (node->leftChild == nullptr && node->rightChild == nullptr)
         {
-            cout << node->symbol << " - " << code << endl;
+            cout << node->symbol << " - " << code << " - " << node->frequency_of_symbol <<  endl;
             return;
         }
 
@@ -349,7 +349,21 @@ int main()
 
     string code;
     code = list.findHuffmanCode(list.getHead(), "T", "");
-
     cout << code << endl;
+
+    //здесь записываем строку нулей и единиц которые представляют последвательность бит после кодирования
+    //эта строка будет использоваться для записи бит закодированного сообщения
+
+    string code_text;
+    for(int i = 0; i < size_of_file; i++)
+    {
+        string sym(1, my_text[i]);
+        code = list.findHuffmanCode(list.getHead(), sym, "");
+        code_text = code_text+code;
+    }
+    cout<<"Code text: "<<code_text<< endl;
+
+
+
     return 0;
 }
