@@ -301,9 +301,9 @@ int main()
 
     list.printList();
 
+    //строим дерево Хаффмана
     int size_of_list = list.sizeOfList();
     current = list.getHead();
-
     while(list.sizeOfList() != 1)
     {
         current = list.getHead();
