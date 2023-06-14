@@ -285,6 +285,24 @@ public:
     }
 };
 
+void print_vector(unsigned char vector)
+{
+    if (vector)
+    {
+
+        unsigned char mask;
+
+        for (unsigned char ix_bit_ltr = 0, ix_bit_rtl = 7; ix_bit_ltr < 8; ix_bit_ltr++, ix_bit_rtl--)
+        {
+            mask = 1 << ix_bit_rtl; // сдвигаем маску на нужное количесто бит
+            // с помощью & проверяем установлен бит или нет, если нет то выводим 0, если да то выводим 1
+            printf("%d", (vector & mask) ? 1 : 0);
+        }
+
+        printf("\n");
+    }
+}
+
 int main()
 {
     ifstream myfile("mytext.txt"); //открываем файл
@@ -361,9 +379,50 @@ int main()
         code = list.findHuffmanCode(list.getHead(), sym, "");
         code_text = code_text+code;
     }
-    cout<<"Code text: "<<code_text<< endl;
+    cout<<"Code text: "<< code_text<< endl << endl;
 
 
+    //записываем биты в файл
+    unsigned char sym_to_write = 0;
+    unsigned char mask = 0;
+
+    ofstream file("code_text.txt");
+    size_t size_of_code_text = code_text.length();
+    size_t lastBits = size_of_code_text % 8;
+
+    if (file.is_open())
+    {
+        int i = 0;
+        for (; i < size_of_code_text; i++)
+        {
+            string sym(1, code_text[i]);
+            if (sym == "1")
+            {
+                
+                mask = (1 << (8 - (i%8) - 1));
+                sym_to_write |= mask;
+            }
+
+            if ( i != 0 && i % 8 == 0)
+            {
+                print_vector(sym_to_write);
+                file << sym_to_write;
+                sym_to_write = 0;
+            }
+        }
+
+        for (int j = 0; j < lastBits; j++)
+        {
+            string sym(1, code_text[(i-1)+j]);
+            if (sym == "1")
+            {
+                mask = (1 << (8 - (j % 8) - 1));
+                sym_to_write |= mask;
+            }
+        }
+        print_vector(sym_to_write);
+        file << sym_to_write;
+    }
 
     return 0;
 }
